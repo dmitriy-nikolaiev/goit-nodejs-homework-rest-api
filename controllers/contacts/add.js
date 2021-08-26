@@ -1,5 +1,5 @@
-const { joiContactSchema } = require('../../validation')
-const contactOperations = require('../../contactsData')
+const { joiContactSchema } = require('../../model/validation')
+const contactOperations = require('../../model/contactsData')
 
 const add = async (req, res, next) => {
   try {

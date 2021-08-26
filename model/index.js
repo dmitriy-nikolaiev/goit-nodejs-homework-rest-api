@@ -1,7 +1,7 @@
 // const fs = require('fs/promises')
 // const contacts = require('./contacts.json')
 
-const contactsControl = require('./controllers/contacts')
+const contactsControl = require('../controllers/contacts')
 
 const listContacts = contactsControl.getAll
 
