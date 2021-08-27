@@ -1,5 +1,5 @@
-const { joiContactSchema } = require('../../model/validation')
-const contactOperations = require('../../model/contactsData')
+const { Contact, joiContactSchema } = require('../../model/schemas')
+// const contactOperations = require('../../model/contactsData')
 
 const add = async (req, res, next) => {
   try {
@@ -10,9 +10,14 @@ const add = async (req, res, next) => {
       })
     }
 
-    const newContact = await contactOperations.add(req.body)
+    // const newContact = await contactOperations.add(req.body)
+    // res.status(201).json({
+    //   contact: newContact,
+    // })
+
+    const newContact = await Contact.create(req.body)
     res.status(201).json({
-      contact: newContact,
+      newContact,
     })
   } catch (error) {
     next(error)
