@@ -1,20 +1,7 @@
-const { Contact, joiContactSchema } = require('../../model/schemas')
-// const contactOperations = require('../../model/contactsData')
+const { Contact } = require('../../model/schemas')
 
 const add = async (req, res, next) => {
   try {
-    const { error } = joiContactSchema.validate(req.body)
-    if (error) {
-      return res.status(400).json({
-        message: error.message,
-      })
-    }
-
-    // const newContact = await contactOperations.add(req.body)
-    // res.status(201).json({
-    //   contact: newContact,
-    // })
-
     const newContact = await Contact.create(req.body)
     res.status(201).json({
       newContact,

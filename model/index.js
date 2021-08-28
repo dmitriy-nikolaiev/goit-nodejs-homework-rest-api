@@ -13,10 +13,13 @@ const addContact = contactsControl.add
 
 const updateContact = contactsControl.update
 
+const updateStatusContact = contactsControl.updateStatus
+
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
   updateContact,
+  updateStatusContact,
 }

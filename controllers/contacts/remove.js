@@ -1,9 +1,9 @@
-const contactOperations = require('../../model/contactsData')
+const { Contact } = require('../../model/schemas')
 
 const remove = async (req, res, next) => {
   try {
     const { contactId } = req.params
-    const deletedContact = await contactOperations.remove(contactId)
+    const deletedContact = await Contact.findByIdAndRemove(contactId)
 
     if (!deletedContact) {
       return res.status(404).json({
