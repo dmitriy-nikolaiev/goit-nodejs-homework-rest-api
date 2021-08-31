@@ -4,24 +4,17 @@ require('dotenv').config()
 
 const app = require('../app')
 
-const { DB_HOST, PORT = 3000 } = process.env
-
-// {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useUnifiedTopology: true
-// }
-// mongoose.set('useNewUrlParser', true)
-// mongoose.set('useFindAndModify', false)
-// mongoose.set('useCreateIndex', true)
-// mongoose.set('useUnifiedTopology', true)
+// const { DB_HOST, PORT = 3000 } = process.env
+const { DB_USER, DB_USER_PASS, DB_NAME, PORT = 3000 } = process.env
+const DB_HOST = `mongodb+srv://${DB_USER}:${DB_USER_PASS}@cluster0.zavyu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 
 mongoose
   .connect(DB_HOST, {
-    useNewUrlParser: true,
+    // These parameters are no longer supported from version Mongoose 6.x
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
     // useFindAndModify: false,
     // useCreateIndex: true,
-    useUnifiedTopology: true,
   })
   .then(() => {
     app.listen(PORT)
