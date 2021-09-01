@@ -1,4 +1,9 @@
+const jwt = require('jsonwebtoken')
+
 const { User } = require('../../model/schemas')
+
+require('dotenv').config()
+const SECRET_KEY = process.env.SECRET_KEY
 
 const login = async (req, res, next) => {
   try {
@@ -8,13 +13,16 @@ const login = async (req, res, next) => {
     const compareResult = user.comparePassword(password)
 
     if (!user || !compareResult) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: 'Email or password is wrong',
       })
     }
 
-    const token = 'exampletoken_maswdcc93022cnjdhd92dsd221093ddbseir'
-    const { subscription } = user
+    const { id, subscription } = user
+    const payload = { id }
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' })
+    await User.updateOne({ _id: id }, { token })
+
     res.json({
       token,
       user: {
