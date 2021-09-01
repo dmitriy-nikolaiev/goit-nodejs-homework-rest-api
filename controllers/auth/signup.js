@@ -15,8 +15,12 @@ const signup = async (req, res, next) => {
     newUser.setPassword(password)
     await newUser.save()
 
+    const { subscription } = newUser
     res.status(201).json({
-      user: newUser,
+      user: {
+        email,
+        subscription,
+      },
     })
   } catch (error) {
     next(error)

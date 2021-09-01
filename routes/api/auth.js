@@ -10,8 +10,8 @@ const userValidationMiddleware = validation(joiUserSchema)
 
 router.post('/signup', userValidationMiddleware, auth.signup)
 
-// router.post("/login", userValidationMiddleware, ctrl.login);
+router.post('/login', userValidationMiddleware, auth.login)
 
-// router.get("/logout", ctrl.logout);
+// router.get('/logout', ctrl.logout);
 
 module.exports = router
