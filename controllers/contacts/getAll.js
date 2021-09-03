@@ -1,8 +1,8 @@
 const { Contact } = require('../../model/schemas')
 
-const getAll = async (_, res, next) => {
+const getAll = async (req, res, next) => {
   try {
-    const contact = await Contact.find({}, 'name email phone favorite')
+    const contact = await Contact.find(req.query, 'name email phone favorite')
     res.json({
       contact,
     })

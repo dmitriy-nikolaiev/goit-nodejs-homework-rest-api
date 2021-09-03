@@ -1,8 +1,9 @@
 const express = require('express')
 
 const { joiContactSchema } = require('../../model/schemas')
-const { validation } = require('../../middlewares')
+const { validation, authentication } = require('../../middlewares')
 // const {users: ctrl} = require("../../controllers");
+// const authentication = require('../../middlewares/authentication')
 
 const validationMiddleware = validation(joiContactSchema)
 
@@ -10,7 +11,8 @@ const router = express.Router()
 
 const ctrl = require('../../model')
 
-router.get('/', ctrl.listContacts)
+router.get('/', authentication, ctrl.listContacts)
+// router.get('/', authentication, ctrl.listContacts)
 
 router.get('/:contactId', ctrl.getContactById)
 
