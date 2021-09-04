@@ -1,24 +1,28 @@
 const { Contact } = require('../../model/schemas')
-// findOne({ _id })
-// findById
-const getById = async (req, res, next) => {
-  try {
-    const { contactId } = req.params
-    // const contact = await Contact.findOne({ _id: contactId })
-    const contact = await Contact.findById(contactId)
+const { NotFound } = require('http-errors')
 
-    if (!contact) {
-      return res.status(404).json({
-        message: 'Not found',
-      })
-    }
+const getById = async (req, res) => {
+  const { contactId } = req.params
+  const contact = await Contact.findOne({
+    _id: contactId,
+    owner: req.user._id,
+  }).populate('owner', '_id email subscription')
+  // const contact = await Contact.findById(contactId).populate(
+  //   'owner',
+  //   '_id email subscription',
+  // )
 
-    res.json({
-      contact,
-    })
-  } catch (error) {
-    next(error)
+  if (!contact) {
+    throw new NotFound()
+
+    // return res.status(404).json({
+    //   message: 'Not found',
+    // })
   }
+
+  res.json({
+    contact,
+  })
 }
 
 module.exports = getById

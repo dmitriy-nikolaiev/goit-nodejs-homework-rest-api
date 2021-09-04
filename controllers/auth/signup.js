@@ -1,4 +1,5 @@
 const { User } = require('../../model/schemas')
+const { Conflict } = require('http-errors')
 
 const signup = async (req, res, next) => {
   try {
@@ -6,9 +7,11 @@ const signup = async (req, res, next) => {
 
     const user = await User.findOne({ email })
     if (user) {
-      return res.status(409).json({
-        message: 'Email in use',
-      })
+      throw new Conflict('Email in use')
+
+      // return res.status(409).json({
+      //   message: 'Email in use',
+      // })
     }
 
     const newUser = new User({ email })

@@ -1,14 +1,14 @@
 const { Contact } = require('../../model/schemas')
 
-const getAll = async (req, res, next) => {
-  try {
-    const contact = await Contact.find(req.query, 'name email phone favorite')
-    res.json({
-      contact,
-    })
-  } catch (error) {
-    next(error)
-  }
+const getAll = async (req, res) => {
+  const contact = await Contact.find({
+    ...req.query,
+    owner: req.user._id,
+  }).populate('owner', '_id email subscription')
+
+  res.json({
+    contact,
+  })
 }
 
 module.exports = getAll

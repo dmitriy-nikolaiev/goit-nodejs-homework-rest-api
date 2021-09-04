@@ -1,32 +1,30 @@
 const { Contact } = require('../../model/schemas')
-// const { joiContactSchema } = require('../../model/validation')
+const { NotFound } = require('http-errors')
 
 const update = async (req, res, next) => {
-  try {
-    // const { error } = joiContactSchema.validate(req.body)
-    // if (error) {
-    //   return res.status(400).json({
-    //     message: error.message,
-    //   })
-    // }
+  const { contactId } = req.params
 
-    const { contactId } = req.params
-    // const updateContact = await contactOperations.update(contactId, req.body)
-    const updateContact = await Contact.findByIdAndUpdate(contactId, req.body, {
+  const updateContact = await Contact.findOneAndUpdate(
+    { _id: contactId, owner: req.user._id },
+    {
+      ...req.body,
+      owner: req.user._id,
+    },
+    {
       new: true,
-    })
-    if (!updateContact) {
-      return res.status(404).json({
-        message: 'Not found',
-      })
-    }
+    },
+  )
+  if (!updateContact) {
+    throw new NotFound()
 
-    res.status(201).json({
-      contact: updateContact,
-    })
-  } catch (error) {
-    next(error)
+    // return res.status(404).json({
+    //   message: 'Not found',
+    // })
   }
+
+  res.status(201).json({
+    contact: updateContact,
+  })
 }
 
 module.exports = update
