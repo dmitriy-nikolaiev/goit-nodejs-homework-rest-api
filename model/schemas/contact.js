@@ -1,6 +1,8 @@
 const { Schema, SchemaTypes, model } = require('mongoose')
 const Joi = require('joi')
 
+const mongoosePaginate = require('mongoose-paginate-v2')
+
 const emailRegexp = /\b[\w\\.-]+@[\w\\.-]+\.\w{2,4}\b/
 const phoneRegexp =
   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
@@ -30,6 +32,7 @@ const contactSchema = Schema(
   },
   { versionKey: false, timestamps: true },
 )
+contactSchema.plugin(mongoosePaginate)
 
 const joiContactSchema = Joi.object({
   name: Joi.string().required(),

@@ -1,7 +1,7 @@
 const { User } = require('../../model/schemas')
 const { BadRequest, NotFound } = require('http-errors')
 
-const updateSubscription = async (req, res, next) => {
+const updateSubscription = async (req, res) => {
   const { subscription } = req.body
 
   if (subscription === undefined) {
@@ -16,6 +16,7 @@ const updateSubscription = async (req, res, next) => {
     { subscription },
     {
       new: true,
+      runValidators: true,
     },
   )
   if (!updateUser) {
