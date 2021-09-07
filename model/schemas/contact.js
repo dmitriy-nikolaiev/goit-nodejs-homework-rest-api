@@ -1,5 +1,7 @@
-const { Schema, model } = require('mongoose')
+const { Schema, SchemaTypes, model } = require('mongoose')
 const Joi = require('joi')
+
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const emailRegexp = /\b[\w\\.-]+@[\w\\.-]+\.\w{2,4}\b/
 const phoneRegexp =
@@ -23,9 +25,14 @@ const contactSchema = Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
+    },
   },
   { versionKey: false, timestamps: true },
 )
+contactSchema.plugin(mongoosePaginate)
 
 const joiContactSchema = Joi.object({
   name: Joi.string().required(),
