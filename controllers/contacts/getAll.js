@@ -1,21 +1,17 @@
 const { Contact } = require('../../model/schemas')
 
 const getAll = async (req, res) => {
-  const { page = 1, limit = 0, offset = 0, ...searchQuery } = { ...req.query }
+  const { page = 1, limit = 0, ...searchQuery } = { ...req.query }
   searchQuery.owner = req.user._id
-  const paginateOptions = {
-    page,
-    limit,
-    offset,
+  const paginationOptions = {
+    page: +page,
+    limit: +limit,
     populate: { path: 'owner', select: '_id email subscription' },
   }
   const { docs: contacts, ...rest } = await Contact.paginate(
     searchQuery,
-    limit === 0 ? { pagination: false } : paginateOptions,
+    limit === 0 ? { pagination: false } : paginationOptions,
   )
-  // console.log(req.query)
-  // console.log(paginateOptions)
-  // console.log(searchQuery)
 
   res.json({
     contacts,
