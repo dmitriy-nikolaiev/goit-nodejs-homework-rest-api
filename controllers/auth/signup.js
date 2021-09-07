@@ -1,5 +1,6 @@
 const { User } = require('../../model/schemas')
 const { Conflict } = require('http-errors')
+const gravatar = require('gravatar')
 
 const signup = async (req, res, next) => {
   try {
@@ -16,13 +17,18 @@ const signup = async (req, res, next) => {
 
     const newUser = new User({ email })
     newUser.setPassword(password)
+
+    const gravatarOptions = { s: '200', r: 'g', d: 'monsterid' }
+    newUser.avatarURL = gravatar.url(email, gravatarOptions, false)
+
     await newUser.save()
 
-    const { subscription } = newUser
+    const { subscription, avatarURL } = newUser
     res.status(201).json({
       user: {
         email,
         subscription,
+        avatarURL,
       },
     })
   } catch (error) {
