@@ -13,6 +13,13 @@ const multerConfig = multer.diskStorage({
   limits: {
     fileSize: 1024,
   },
+  // fileFilter: (req, file, cb) => {
+  //   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+  //     // return cb(new Error(`Only jpg|jpeg|png|gif are allowed`))
+  //   }
+
+  //   cb(null, true)
+  // },
 })
 
 const upload = multer({
