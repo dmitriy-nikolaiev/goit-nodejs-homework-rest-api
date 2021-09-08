@@ -48,6 +48,7 @@ const joiUserSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
   subscription: Joi.string().valid(...subscriptionValues),
+  avatarURL: Joi.string(),
 })
 
 const User = model('user', userSchema)

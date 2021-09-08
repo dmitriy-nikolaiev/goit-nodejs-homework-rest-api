@@ -6,12 +6,9 @@ const updateSubscription = async (req, res) => {
 
   if (subscription === undefined) {
     throw new BadRequest('missing field subscription')
-    // return res.status(400).json({
-    //   message: 'missing field subscription',
-    // })
   }
 
-  const updateUser = await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     req.user._id,
     { subscription },
     {
@@ -19,16 +16,12 @@ const updateSubscription = async (req, res) => {
       runValidators: true,
     },
   )
-  if (!updateUser) {
+  if (!updatedUser) {
     throw new NotFound()
-    // return res.status(404).json({
-    //   message: 'Not found',
-    // })
   }
 
-  res.json({
-    updateUser,
-  })
+  const { email } = updatedUser
+  res.json({ email, subscription })
 }
 
 module.exports = updateSubscription

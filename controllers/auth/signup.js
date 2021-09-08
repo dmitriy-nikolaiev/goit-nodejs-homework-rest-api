@@ -9,16 +9,12 @@ const signup = async (req, res, next) => {
     const user = await User.findOne({ email })
     if (user) {
       throw new Conflict('Email in use')
-
-      // return res.status(409).json({
-      //   message: 'Email in use',
-      // })
     }
 
     const newUser = new User({ email })
     newUser.setPassword(password)
 
-    const gravatarOptions = { s: '200', r: 'g', d: 'monsterid' }
+    const gravatarOptions = { s: '250', r: 'g', d: 'monsterid' }
     newUser.avatarURL = gravatar.url(email, gravatarOptions, false)
 
     await newUser.save()
