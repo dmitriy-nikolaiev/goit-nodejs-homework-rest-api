@@ -14,7 +14,7 @@ const signup = async (req, res, next) => {
     const newUser = new User({ email })
     newUser.setPassword(password)
 
-    const gravatarOptions = { s: '250', r: 'g', d: 'monsterid' }
+    const gravatarOptions = { s: '250', d: 'robohash' }
     newUser.avatarURL = gravatar.url(email, gravatarOptions, false)
 
     await newUser.save()

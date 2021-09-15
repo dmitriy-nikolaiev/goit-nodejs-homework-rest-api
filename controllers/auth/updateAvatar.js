@@ -9,10 +9,7 @@ const avatarsDir = path.join(__dirname, '../../', 'public/avatars')
 const fileExtFilter = 'jpg|jpeg|png|gif'
 
 const updateAvatar = async (req, res) => {
-  const id = req.user._id.toHexString()
-  // const id = req.user._id.str
-  // const id = JSON.stringify(req.user._id)
-  // console.log(req.file)
+  const id = req.user._id.toString()
 
   const { path: tempPath, originalname } = req.file
 
@@ -22,7 +19,6 @@ const updateAvatar = async (req, res) => {
   }
 
   const fileName = id + '_avatar' + path.extname(originalname)
-  // const uploadPath = path.join(avatarsDir, id, originalname)
   const uploadPath = path.join(avatarsDir, fileName)
 
   try {
