@@ -1,6 +1,7 @@
 const { User } = require('../../model/schemas')
 const { Conflict } = require('http-errors')
 const gravatar = require('gravatar')
+const { sendMail } = require('../../utils')
 
 const signup = async (req, res, next) => {
   try {
@@ -17,9 +18,29 @@ const signup = async (req, res, next) => {
     const gravatarOptions = { s: '250', d: 'robohash' }
     newUser.avatarURL = gravatar.url(email, gravatarOptions, false)
 
+    newUser.setVerifyToken()
+
     await newUser.save()
 
-    const { subscription, avatarURL } = newUser
+    const { host } = req.headers
+    const { subscription, avatarURL, verificationToken } = newUser
+    const data = {
+      to: email,
+      subject: 'Email address verification',
+      html: `<b> Hi user!</b>
+      <p>We just need to verify your email address before you can access to ${host}.</p>
+      <p>Verify your email address: <a href="http://${host}/users/verify/${verificationToken}">Just follow this link</a></p>
+
+      Thanks! &#8211; The Company team)
+      `,
+    }
+
+    await sendMail(data)
+    // const sendingResult = await sendMail(data)
+    // if (!sendingResult) {
+    //   throw new Conflict('Email verification sending failed')
+    // }
+
     res.status(201).json({
       user: {
         email,

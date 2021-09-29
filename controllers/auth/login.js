@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Unauthorized } = require('http-errors')
+const { Unauthorized, Forbidden } = require('http-errors')
 
 const { User } = require('../../model/schemas')
 
@@ -10,18 +10,18 @@ const login = async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
-  const compareResult = user.comparePassword(password)
+  const compareResult = user && user.comparePassword(password)
 
   if (!user || !compareResult) {
     throw new Unauthorized('Email or password is wrong')
-    // return res.status(401).json({
-    //   message: 'Email or password is wrong',
-    // })
+  }
+
+  if (!user.verify) {
+    throw new Forbidden('Email not verified')
   }
 
   const { _id: id, subscription } = user
   const payload = { id }
-  // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' })
   const token = jwt.sign(payload, SECRET_KEY)
   await User.findByIdAndUpdate(
     id,
